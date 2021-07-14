@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Route, Switch, Redirect, withRouter } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { message } from "antd";
 import { Helmet } from "react-helmet";
 import "./App.less";
@@ -8,9 +9,14 @@ import AppHOC from "./components/HOC/AppHOC";
 import LayoutComponent from "./components/Layout";
 import axios from "axios";
 import { baseURL } from "./api";
+import actionCreators from "./store/init/actionCreators";
 const App = ({ history }) => {
   const [userInfo, setUserInfo] = useState({});
   const [refresh, setRefresh] = useState(false);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(actionCreators.getUserList());
+  }, []);
   const getUserInfo = (account) => {
     axios({
       baseURL,

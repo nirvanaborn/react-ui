@@ -5,6 +5,7 @@ import axios from "axios";
 import { baseURL } from "../../api";
 import { Scrollbars } from "react-custom-scrollbars";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 const { TextArea } = Input;
 const loadingIcon = <LoadingOutlined style={{ fontSize: 44 }} spin />;
 const StyledFormComponent = styled(Form)`
@@ -22,6 +23,7 @@ const MessageBoard = () => {
   const scrollBar = useRef();
   const [messageList, setMessageList] = useState([]);
   const [loading, setLoading] = useState(false);
+  const userList = useSelector((store) => store.init?.userList);
   const fetchMessagesList = (params) => {
     setLoading(true);
     axios({
@@ -36,6 +38,7 @@ const MessageBoard = () => {
         if (res.data.code !== 200) {
           message.error(res.data.msg);
         } else {
+          console.log(userList);
           setMessageList(res.data.list);
         }
         setLoading(false);
@@ -47,7 +50,7 @@ const MessageBoard = () => {
     fetchMessagesList();
   }, []);
   useEffect(() => {
-    console.log("scrollbar change detected");
+    // console.log("scrollbar change detected");
     if (scrollBar) scrollBar.current.scrollToBottom();
   }, [scrollBar, messageList]);
   const onFinish = (values) => {
@@ -79,10 +82,9 @@ const MessageBoard = () => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-
   return (
     <div>
-      <h1>MessageBoard</h1>
+      <h1>MessageBoard{userList.length}</h1>
       <Spin indicator={loadingIcon} delay={500} spinning={loading} size="large">
         <Scrollbars style={{ height: "50vh" }} autoHide ref={scrollBar}>
           {messageList.map((messageItem) => (

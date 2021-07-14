@@ -5,6 +5,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { baseURL } from "../../api";
 import { getImgToBase64 } from "../../utils/imgToBase64";
+import { useSelector } from "react-redux";
 const StyledAvatarListComponent = styled.div`
   display: flex;
   & img {
